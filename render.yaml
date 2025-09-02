@@ -1,0 +1,44 @@
+databases:
+  - name: my-postgres
+    databaseName: my_postgres_db
+    user: my_postgres_user
+    plan: free  # Tu peux changer en starter/standard si besoin
+
+services:
+  - type: web
+    name: my-django-backend
+    env: docker
+    plan: free
+    dockerfilePath: ./Dockerfile
+    buildCommand: ./build.sh
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: my-postgres
+          property: connectionString
+
+      # Django settings
+      - key: SECRET_KEY
+        value: "django-insecure-$@_(q^6+yop8^i#(u6jbowm(^m89^ogm(iwvrvj&s5rnfw35h7"
+
+      - key: DEBUG
+        value: "True"   # ⚠️ Mets "False" en production pour + de sécurité
+
+      # Email settings
+      - key: EMAIL_HOST
+        value: smtp.gmail.com
+
+      - key: EMAIL_PORT
+        value: "587"
+
+      - key: EMAIL_HOST_USER
+        value: "misandratra.harena3@gmail.com"
+
+      - key: EMAIL_HOST_PASSWORD
+        value: "cdpk gaba pwbm thhw"
+
+      - key: EMAIL_USE_TLS
+        value: "True"
+
+      - key: DEFAULT_FROM_EMAIL
+        value: "misandratra.harena3@gmail.com"
